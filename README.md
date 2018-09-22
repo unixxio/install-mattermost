@@ -9,7 +9,7 @@ This script will help you install Mattermost. Please change variables at the top
 #### Step 1 - Download and install script
 
 ```
-wget -q https://raw.githubusercontent.com/unixxio/install_mattermost/master/install_mattermost.sh
+wget -q https://raw.githubusercontent.com/unixxio/install-mattermost/master/install_mattermost.sh
 ```
 
 #### Step 2 - Execute install script
