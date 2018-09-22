@@ -127,7 +127,7 @@ chmod 400 mattermost.key
 
 # generate nginx vhost
 variable="$"
-cat <<EOF>> /etc/nginx/sites-available/mattermost.conf
+cat <<EOF>> /etc/nginx/sites-available/${nginx_host_name}.conf
 server {
   listen 80;
   server_name ${nginx_host_name};
@@ -167,7 +167,7 @@ server {
 EOF
 
 # make nginx vhost active
-ln -s /etc/nginx/sites-available/mattermost.conf /etc/nginx/sites-enabled/
+ln -s /etc/nginx/sites-available/${nginx_host_name} /etc/nginx/sites-enabled/
 
 # start services
 systemctl start mattermost
