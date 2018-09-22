@@ -1,5 +1,5 @@
 #!/bin/bash
-# date: september 22 2018
+# date: 22/09/2018 (D/m/Y)
 # creator: unixx.io
 
 # version variables
