@@ -1,6 +1,6 @@
 # Install Mattermost
 
-This script will help you install Mattermost. Please change variables at the top of the script before executing.
+This script will help you install Mattermost, an open source, self-hosted Slack-alternative. Please change variables at the top of the script before executing.
 
 ### Important
 
