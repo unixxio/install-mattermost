@@ -9,7 +9,7 @@ mattermost_version="5.3.1"
 mattermost_system_user="mattermost"
 mattermost_mysql_user="mattermost"
 mattermost_mysql_database="mattermost_db01"
-nginx_host_name="mattermost.unixx.io"
+nginx_host_name="mattermost.yourdomain.com"
 
 # prompt to accept before continue
 clear
