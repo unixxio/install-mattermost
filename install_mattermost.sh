@@ -1,5 +1,5 @@
 #!/bin/bash
-# date: 09-22-2018
+# date: september 22 2018
 # creator: unixx.io
 
 # version variables
@@ -30,7 +30,7 @@ case "$choice" in
   * ) echo "Invalid option";;
 esac
 
-# first install MySQL and Nginx
+# first install pwgen mysql and nginx
 apt-get update > /dev/null 2>&1
 apt-get install pwgen mysql-server mysql-client nginx -y > /dev/null 2>&1
 
@@ -86,7 +86,7 @@ rm mattermost-${mattermost_version}-linux-amd64.tar.gz
 mv mattermost mattermost-${mattermost_version}
 ln -s mattermost-${mattermost_version} latest
 
-# updata config.json
+# update config.json
 sed -i -e 's/:8065/127.0.0.1:8065/g' latest/config/config.json
 sed -i -e 's/"mmuser:mostest@tcp(dockerhost:3306)\/mattermost_test?charset=utf8mb4,utf8&readTimeout=30s&writeTimeout=30s"/"'${mattermost_mysql_user}':'${mattermost_mysql_password}'@tcp(localhost:3306)\/'${mattermost_mysql_database}'?charset=utf8mb4,utf8"/g' latest/config/config.json
 
@@ -122,8 +122,8 @@ systemctl daemon-reload
 # generate selfsigned certificate
 mkdir -p /etc/nginx/ssl
 cd /etc/nginx/ssl
-openssl req -new -newkey rsa:2048 -days 365 -nodes -x509 -subj '/CN=localhost' -keyout mattermost.key -out mattermost.crt > /dev/null 2>&1
-chmod 400 mattermost.key
+openssl req -new -newkey rsa:2048 -days 365 -nodes -x509 -subj '/CN=${nginx_host_name}' -keyout ${nginx_host_name}.key -out ${nginx_host_name}.crt > /dev/null 2>&1
+chmod 400 ${nginx_host_name}.key
 
 # generate nginx vhost
 variable="$"
@@ -142,8 +142,8 @@ server {
   error_log /var/log/nginx/${nginx_host_name}.error.log;
 
   ssl on;
-  ssl_certificate /etc/nginx/ssl/mattermost.crt;
-  ssl_certificate_key /etc/nginx/ssl/mattermost.key;
+  ssl_certificate /etc/nginx/ssl/${nginx_host_name}.crt;
+  ssl_certificate_key /etc/nginx/ssl/${nginx_host_name}.key;
   ssl_session_timeout 5m;
   ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
   ssl_ciphers 'EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH';
