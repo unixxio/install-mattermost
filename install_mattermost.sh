@@ -138,6 +138,9 @@ server {
   listen 443 ssl;
   server_name ${nginx_host_name};
 
+  access_log /var/log/nginx/${nginx_host_name}.access.log;
+  error_log /var/log/nginx/${nginx_host_name}.error.log;
+
   ssl on;
   ssl_certificate /etc/nginx/ssl/mattermost.crt;
   ssl_certificate_key /etc/nginx/ssl/mattermost.key;
