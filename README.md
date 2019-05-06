@@ -18,5 +18,5 @@ sudo bash <( curl https://raw.githubusercontent.com/unixxio/install-mattermost/m
 
 #### Changelog (D/m/Y)
 
+* 06/05/2019 - v1.1 - Update Mattermost and allow arguments for yourdomain.example.com
 * 22/09/2018 - v1.0 - First release
-* 06/05/2019 - v1.1 - Update Mattermost and allow arguments for yourdomain
