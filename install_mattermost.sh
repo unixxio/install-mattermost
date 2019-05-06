@@ -183,10 +183,10 @@ systemctl restart nginx
 
 # done
 echo ""
-echo "You can find your user password in: /home/${mattermost_system_user}/.my.passwd"
-echo "You can find your MySQL password in: /home/${mattermost_system_user}/.my.cnf"
+echo "You can find your MySQL password in: /root/.mysql/.my.${mattermost_system_user}.cnf"
 echo ""
 echo "You can now access https://${nginx_hostname}."
 echo "Make sure your DNS settings are correct and that port 8065 is allowed in your firewall."
+echo "If your DNS settings are correct you can obtain an Let's Certificate with: sudo certbot --nginx -d ${nginx_hostname}"
 echo ""
 exit
