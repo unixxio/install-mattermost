@@ -187,6 +187,7 @@ echo "You can find your MySQL password in: /root/.mysql/.my.${mattermost_system_
 echo ""
 echo "You can now access https://${nginx_hostname}."
 echo "Make sure your DNS settings are correct and that port 8065 is allowed in your firewall."
+echo ""
 echo "If your DNS settings are correct you can obtain an Let's Certificate with: sudo certbot --nginx -d ${nginx_hostname}"
 echo ""
 exit
