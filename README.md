@@ -6,16 +6,10 @@ This script will help you install Mattermost, an open source, self-hosted Slack-
 
 `Do not use this script if you already have MySQL and Nginx installed!`
 
-#### Step 1 - Download and install script
+#### Download and install Mattermost
 
 ```
-wget -q https://raw.githubusercontent.com/unixxio/install-mattermost/master/install_mattermost.sh
-```
-
-#### Step 2 - Execute install script
-
-```
-sudo chmod +x install_mattermost.sh && sudo ./install_mattermost.sh
+bash <( curl https://raw.githubusercontent.com/unixxio/install-mattermost/master/install_mattermost.sh ) yourdomain.example.com
 ```
 
 #### Tested on
@@ -25,3 +19,4 @@ sudo chmod +x install_mattermost.sh && sudo ./install_mattermost.sh
 #### Changelog (D/m/Y)
 
 * 22/09/2018 - v1.0 - First release
+* 06/05/2019 - v1.1 - Update Mattermost and allow arguments for yourdomain
