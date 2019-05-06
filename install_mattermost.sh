@@ -9,7 +9,8 @@ mattermost_version="5.10.0"
 mattermost_system_user="mattermost"
 mattermost_mysql_user="mattermost"
 mattermost_mysql_database="mattermost_db01"
-nginx_host_name="mattermost.yourdomain.com"
+#nginx_host_name="mattermost.yourdomain.com"
+nginx_host_name="$1"
 
 # prompt to accept before continue
 clear
@@ -167,7 +168,7 @@ server {
 EOF
 
 # make nginx vhost active
-ln -s /etc/nginx/sites-available/${nginx_host_name} /etc/nginx/sites-enabled/
+ln -s /etc/nginx/sites-available/${nginx_host_name}.conf /etc/nginx/sites-enabled/
 
 # start services
 systemctl start mattermost
