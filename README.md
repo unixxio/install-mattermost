@@ -12,6 +12,12 @@ This script will help you install Mattermost, an open source, self-hosted Slack-
 bash <( curl -sSL https://raw.githubusercontent.com/unixxio/install-mattermost/master/install_mattermost.sh ) mattermost.yourdomain.com
 ```
 
+#### Obtaining an Let's Encrypt SSL Certificate
+
+```
+sudo certbot --nginx -d mattermost.yourdomain.com
+```
+
 #### Tested on
 
 * Debian 9 Stretch
