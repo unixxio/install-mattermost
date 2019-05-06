@@ -44,9 +44,10 @@ case "$choice" in
   * ) echo "Invalid option";;
 esac
 
-# first install pwgen mysql and nginx
+# first install pwgen mysql and nginx with let's encrypt support
 apt-get update > /dev/null 2>&1
-apt-get install pwgen mysql-server mysql-client nginx -y > /dev/null 2>&1
+#apt-get install pwgen mysql-server mysql-client nginx -y > /dev/null 2>&1
+apt-get install pwgen mysql-server mysql-client python-certbot-nginx -y > /dev/null 2>&1
 
 # set root mysql password (and disable password-less socket auth)
 mysql_password=`pwgen -s -1 16`
