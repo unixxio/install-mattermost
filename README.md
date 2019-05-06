@@ -9,7 +9,7 @@ This script will help you install Mattermost, an open source, self-hosted Slack-
 #### Download and install Mattermost
 
 ```
-bash <( curl https://raw.githubusercontent.com/unixxio/install-mattermost/master/install_mattermost.sh ) yourdomain.example.com
+sudo bash <( curl https://raw.githubusercontent.com/unixxio/install-mattermost/master/install_mattermost.sh ) yourdomain.example.com
 ```
 
 #### Tested on
