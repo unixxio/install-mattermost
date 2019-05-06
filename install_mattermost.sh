@@ -1,5 +1,6 @@
 #!/bin/bash
 # date: 06/05/2019 (D/m/Y)
+# version: v1.1
 # creator: unixx.io
 
 # version variables
