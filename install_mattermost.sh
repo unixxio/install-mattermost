@@ -56,6 +56,9 @@ mysql mysql -e "UPDATE mysql.user SET Password=PASSWORD('${mysql_password}') WHE
 mysql -e "update mysql.user set plugin=null where user='root';"
 mysql -e "FLUSH PRIVILEGES;"
 
+# create .mysql folder to store user passwords
+mkdir -p /root/.mysql
+
 # generate .my.cnf for root user
 cat <<EOF>> /root/.my.cnf
 [client]
@@ -72,43 +75,33 @@ mysql -e "GRANT ALL on ${mattermost_mysql_database}.* to ${mattermost_mysql_user
 mysql -e "GRANT ALL on ${mattermost_mysql_database}.* to ${mattermost_mysql_user}@'127.0.0.1' IDENTIFIED BY '${mattermost_mysql_password}';"
 mysql -e "FLUSH PRIVILEGES;"
 
-# generate mattermost user password
-mattermost_user_password=`pwgen -s -1 12`
-
 # add mattermost system user and set password
-useradd -m -s /bin/bash ${mattermost_system_user}
-echo "${mattermost_system_user}:${mattermost_user_password}" | chpasswd
+useradd -r -s /bin/false ${mattermost_system_user}
 
-# generate password file system user to lookup afterwards
-cat <<EOF>> /home/${mattermost_system_user}/.my.passwd
-user = ${mattermost_system_user}
-password = ${mattermost_user_password}
-EOF
-
-# generate password file mysql to lookup afterwards
-cat <<EOF>> /home/${mattermost_system_user}/.my.cnf
+# generate a mysql password for mattermost
+cat <<EOF>> /root/.mysql/.my.${mattermost_system_user}.cnf
 [client]
 user = ${mattermost_mysql_user}
 password = ${mattermost_mysql_password}
 EOF
 
 # download and install mattermost
-cd /home/${mattermost_system_user}
+cd /opt/
 wget -q https://releases.mattermost.com/${mattermost_version}/mattermost-${mattermost_version}-linux-amd64.tar.gz
 tar -xvf mattermost-${mattermost_version}-linux-amd64.tar.gz > /dev/null 2>&1
 mkdir -p mattermost/data
 rm mattermost-${mattermost_version}-linux-amd64.tar.gz
 mv mattermost mattermost-${mattermost_version}
-ln -s mattermost-${mattermost_version} latest
+ln -s mattermost-${mattermost_version} mattermost
 
 # update config.json
-sed -i -e 's/:8065/127.0.0.1:8065/g' latest/config/config.json
+sed -i -e 's/:8065/127.0.0.1:8065/g' mattermost/config/config.json
 sed -i -e 's/"mmuser:mostest@tcp(dockerhost:3306)\/mattermost_test?charset=utf8mb4,utf8&readTimeout=30s&writeTimeout=30s"/"'${mattermost_mysql_user}':'${mattermost_mysql_password}'@tcp(localhost:3306)\/'${mattermost_mysql_database}'?charset=utf8mb4,utf8"/g' latest/config/config.json
 
 # set permissions
-chown -R ${mattermost_system_user}: /home/${mattermost_system_user}/*
-chown -R ${mattermost_system_user}: /home/${mattermost_system_user}/.*
-chown -h ${mattermost_system_user}: /home/${mattermost_system_user}/latest
+chown -R ${mattermost_system_user}: /opt/mattermost*
+#chown -R ${mattermost_system_user}: /opt/mattermost/.*
+chown -h ${mattermost_system_user}: /opt/mattermost
 
 # add mattermost systemd init
 cat <<EOF>> /etc/systemd/system/mattermost.service
@@ -120,9 +113,9 @@ After=syslog.target network.target
 Type=notify
 User=${mattermost_system_user}
 Group=${mattermost_system_user}
-ExecStart=/home/${mattermost_system_user}/latest/bin/mattermost
+ExecStart=/opt/mattermost/bin/mattermost
 PIDFile=/var/spool/mattermost/pid/master.pid
-WorkingDirectory=/home/${mattermost_system_user}/latest
+WorkingDirectory=/opt/mattermost
 Restart=always
 RestartSec=30
 LimitNOFILE=49152
