@@ -10,8 +10,20 @@ mattermost_version="5.10.0"
 mattermost_system_user="mattermost"
 mattermost_mysql_user="mattermost"
 mattermost_mysql_database="mattermost_db01"
-#nginx_host_name="mattermost.yourdomain.com"
-nginx_host_name="$1"
+nginx_hostname="$1"
+
+# check if script is executed as root
+MYUID="$(/usr/bin/id -u)"
+if [[ "${MYUID}" != 0 ]]; then
+    echo -e "\n[ Error ] This script must be run as root.\n"
+    exit 0;
+fi
+
+# check if the nginx_hostname variable is not empty
+if [[ "${nginx_hostname}" = "" ]]; then
+    echo -e "\n[ Error ] Please enter a domain for mattermost.(Example: mattermost.yourdomain.com)\n"
+    exit
+fi
 
 # prompt to accept before continue
 clear
@@ -124,28 +136,28 @@ systemctl daemon-reload
 # generate selfsigned certificate
 mkdir -p /etc/nginx/ssl
 cd /etc/nginx/ssl
-openssl req -new -newkey rsa:2048 -days 365 -nodes -x509 -subj '/CN=${nginx_host_name}' -keyout ${nginx_host_name}.key -out ${nginx_host_name}.crt > /dev/null 2>&1
-chmod 400 ${nginx_host_name}.key
+openssl req -new -newkey rsa:2048 -days 365 -nodes -x509 -subj '/CN=${nginx_hostname}' -keyout ${nginx_hostname}.key -out ${nginx_hostname}.crt > /dev/null 2>&1
+chmod 400 ${nginx_hostname}.key
 
 # generate nginx vhost
 variable="$"
-cat <<EOF>> /etc/nginx/sites-available/${nginx_host_name}.conf
+cat <<EOF>> /etc/nginx/sites-available/${nginx_hostname}.conf
 server {
   listen 80;
-  server_name ${nginx_host_name};
-  return 301 https://${nginx_host_name};
+  server_name ${nginx_hostname};
+  return 301 https://${nginx_hostname};
 }
 
 server {
   listen 443 ssl;
-  server_name ${nginx_host_name};
+  server_name ${nginx_hostname};
 
-  access_log /var/log/nginx/${nginx_host_name}.access.log;
-  error_log /var/log/nginx/${nginx_host_name}.error.log;
+  access_log /var/log/nginx/${nginx_hostname}.access.log;
+  error_log /var/log/nginx/${nginx_hostname}.error.log;
 
   ssl on;
-  ssl_certificate /etc/nginx/ssl/${nginx_host_name}.crt;
-  ssl_certificate_key /etc/nginx/ssl/${nginx_host_name}.key;
+  ssl_certificate /etc/nginx/ssl/${nginx_hostname}.crt;
+  ssl_certificate_key /etc/nginx/ssl/${nginx_hostname}.key;
   ssl_session_timeout 5m;
   ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
   ssl_ciphers 'EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH';
@@ -169,7 +181,7 @@ server {
 EOF
 
 # make nginx vhost active
-ln -s /etc/nginx/sites-available/${nginx_host_name}.conf /etc/nginx/sites-enabled/
+ln -s /etc/nginx/sites-available/${nginx_hostname}.conf /etc/nginx/sites-enabled/
 
 # start services
 systemctl start mattermost
@@ -180,7 +192,7 @@ echo ""
 echo "You can find your user password in: /home/${mattermost_system_user}/.my.passwd"
 echo "You can find your MySQL password in: /home/${mattermost_system_user}/.my.cnf"
 echo ""
-echo "You can now access https://${nginx_host_name}."
+echo "You can now access https://${nginx_hostname}."
 echo "Make sure your DNS settings are correct and that port 8065 is allowed in your firewall."
 echo ""
 exit
