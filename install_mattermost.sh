@@ -13,15 +13,15 @@ mattermost_mysql_database="mattermost_db01"
 nginx_hostname="$1"
 
 # check if script is executed as root
-MYUID="$(/usr/bin/id -u)"
-if [[ "${MYUID}" != 0 ]]; then
+myuid="$(/usr/bin/id -u)"
+if [[ "${myuid}" != 0 ]]; then
     echo -e "\n[ Error ] This script must be run as root.\n"
     exit 0;
 fi
 
 # check if the nginx_hostname variable is not empty
 if [[ "${nginx_hostname}" = "" ]]; then
-    echo -e "\n[ Error ] Please enter a domain for mattermost.(Example: mattermost.yourdomain.com)\n"
+    echo -e "\n[ Error ] Please enter a domain for mattermost. (Example: mattermost.yourdomain.com)\n"
     exit
 fi
 
