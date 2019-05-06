@@ -1,9 +1,9 @@
 #!/bin/bash
-# date: 22/09/2018 (D/m/Y)
+# date: 06/05/2019 (D/m/Y)
 # creator: unixx.io
 
 # version variables
-mattermost_version="5.3.1"
+mattermost_version="5.10.0"
 
 # mattermost variables
 mattermost_system_user="mattermost"
