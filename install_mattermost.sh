@@ -96,7 +96,7 @@ ln -s mattermost-${mattermost_version} mattermost
 
 # update config.json
 sed -i -e 's/:8065/127.0.0.1:8065/g' mattermost/config/config.json
-sed -i -e 's/"mmuser:mostest@tcp(dockerhost:3306)\/mattermost_test?charset=utf8mb4,utf8&readTimeout=30s&writeTimeout=30s"/"'${mattermost_mysql_user}':'${mattermost_mysql_password}'@tcp(localhost:3306)\/'${mattermost_mysql_database}'?charset=utf8mb4,utf8"/g' latest/config/config.json
+sed -i -e 's/"mmuser:mostest@tcp(dockerhost:3306)\/mattermost_test?charset=utf8mb4,utf8&readTimeout=30s&writeTimeout=30s"/"'${mattermost_mysql_user}':'${mattermost_mysql_password}'@tcp(localhost:3306)\/'${mattermost_mysql_database}'?charset=utf8mb4,utf8"/g' mattermost/config/config.json
 
 # set permissions
 chown -R ${mattermost_system_user}: /opt/mattermost*
