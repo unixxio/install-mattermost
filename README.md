@@ -4,7 +4,7 @@ This script will help you install Mattermost, an open source, self-hosted Slack-
 
 ### Important
 
-Do **NOT** use this script if you already have `MySQL` and `Nginx` installed!
+Do **NOT** use this script if you already have `Nginx`, `MySQL` or `MariaDB` installed!
 
 #### Download and install Mattermost
 
