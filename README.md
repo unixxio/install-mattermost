@@ -1,6 +1,6 @@
 # Install Mattermost
 
-This script will help you install Mattermost, an open source, self-hosted Slack-alternative. Change mattermost.yourdomain.com accordingly.
+This script will help you install Mattermost, an open source, self-hosted Slack-alternative. Change `mattermost.yourdomain.com` accordingly.
 
 ### Important
 
